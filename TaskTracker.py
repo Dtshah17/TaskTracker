@@ -48,10 +48,10 @@ class TaskTracker:
     def __init__(self, filename="tasks.json"):
         self.filename = filename
         self.tasks = {}
-        self.load_tasks()
+        #self.load_tasks()
     
     def load_tasks(self):
-        if os.path.exist(self.filename):
+        if os.path.exists(self.filename):
             with open(self.filename, 'r') as f:
                 data = json.load(f)
                 for task_id, task_data in data.items():
@@ -72,6 +72,14 @@ class TaskTracker:
         if not self.tasks:
             return 1
         return max(int(task_id) for task_id in self.tasks.keys()) + 1
+
+    def addTask(self, description="", status=TaskStatus.TODO):
+        task = Task(self.next_task_id, description, status)
+        self.tasks[str(task.id)] = task
+        print(f"[Task {task.taskDesc} Added]")
+
+
+
     
 #Tests######################################
 
@@ -79,9 +87,12 @@ task1 = Task(1, "Make Program")
 print(task1)
 
 task1.markD()
-task1.task_dict()
-
+print(task1.task_dict())
 print(task1)
+
+tasktracker = TaskTracker()
+tasktracker.addTask("Get Milk")
+tasktracker.save_task()
 
 ############################################
 
